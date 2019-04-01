@@ -45,6 +45,13 @@ text ({LETTERS}|{DIGITS}|{SPACE})
 "</sub>" {return SUBSCRIPT_END;}
 "<sup>" {return SUPERSCRIPT_BEGIN;}
 "</sup>" {return SUPERSCRIPT_END;}
+
+"<table>" {return TABLE_BEGIN;}
+"</table>" {return TABLE_END;}
+"<td>" {return TABLEDATA_BEGIN;}
+"</td>" {return TABLEDATA_END;}
+"<th>" {return TABLEHEADER_BEGIN;}
+"</th>" {return TABLEHEADER_END;}
 "<tr>" {return TABLEROW_BEGIN;}
 "</tr>" {return TABLEROW_BEGIN;}
 {text}   {return TEXT;}
