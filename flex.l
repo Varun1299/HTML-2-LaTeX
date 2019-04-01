@@ -1,6 +1,7 @@
 %{
- // #include "y.tab.h"
- #include <stdio.h>
+#include "parser.tab.h"
+#include <stdio.h>
+int tag_open = 0;
 %}
 
 SPACE [ \t ]+
@@ -33,23 +34,24 @@ CAPTION [Cc][aA][pP][tT][Ii][Oo][nN]
 
 %%
 
-{LAB}{HTML}{RAB} {printf("H\n");}
-{LAB}{SLASH}{HTML}{RAB} {printf("H\n");}
+{LAB}{HTML}{RAB} {    tag_open = 0; return HTML_BEGIN;    }   //html open tag
+{LAB}{SLASH}{HTML}{RAB} {    tag_open = 0; return HTML_END; }  //html end tag
 
-{LAB}{BODY}{RAB} {printf("p\n");}
-{LAB}{SLASH}{BODY}{RAB} {printf("p\n");}
+{LAB}{BODY}{RAB} {    tag_open = 1; return BODY_BEGIN;    }    //body begin tag
+{LAB}{SLASH}{BODY}{RAB} {    tag_open = 0; return BODY_END; }  //body end tag
 
+{LAB}{HEADER}"1"{RAB} {    return HEADER_1_BEGIN;    }   //h1 header tag
+{LAB}{HEADER}"2"{RAB} {    return HEADER_2_BEGIN;    }   //h2 header tag
+{LAB}{HEADER}"3"{RAB} {    return HEADER_3_BEGIN;    }   //h3 header tag
+{LAB}{SLASH}{HEADER}"1"{RAB} {    return HEADER_1_END; }   //h1 end tag
+{LAB}{SLASH}{HEADER}"2"{RAB} {    return HEADER_2_END; }    //h2 end tag
+{LAB}{SLASH}{HEADER}"3"{RAB} {    return HEADER_3_END; }   //h3 end tag
 
-{LAB}{HEADER}"1"{RAB} {printf("G");}
-{LAB}{HEADER}"2"{RAB} {printf("G");}
-{LAB}{HEADER}"3"{RAB} {printf("G");}
-{LAB}{SLASH}{HEADER}"1"{RAB} {printf("G");}
-{LAB}{SLASH}{HEADER}"2"{RAB} {printf("G");}
-{LAB}{SLASH}{HEADER}"3"{RAB} {printf("G");}
+{LAB}{PARA}{RAB} {    return PARA_BEGIN; }      //para begin tag
+{LAB}{SLASH}{PARA}{RAB} {    return PARA_END; }  //para end tag
 
-{LAB}{PARA}{RAB} {printf("p\n");}
-{LAB}{SLASH}{PARA}{RAB} {printf("p\n");}
-
+{text}       {   if(tag_open == 1) {  yylval.str = strdup(yytext); return TEXT; }    }    //text tag
+.            {  return yytext[0];    }
 
 {LAB}{BOLD}{RAB} {printf("p\n");}
 {LAB}{SLASH}{BOLD}{RAB} {printf("p\n");}
@@ -107,16 +109,6 @@ CAPTION [Cc][aA][pP][tT][Ii][Oo][nN]
 {LAB}{CAPTION}{RAB} {printf("C\n");}
 {LAB}{SLASH}{CAPTION}{RAB} {printf("C\n");}
 
-. {}
-%%
-int main(void)
-{
-    yylex();
-    return 0;
-}
 
-int yyerror(char *s)
-{
-    printf("Error");
-    exit(1);
-}
+
+%%
