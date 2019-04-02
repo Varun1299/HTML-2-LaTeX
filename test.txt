@@ -1,9 +1,19 @@
-<h1>
-<H1>
-</h1>
-hH
-HHHHH1
-<strong>
+<html>
+<body>
+<h1>ya ya</h1>
+assa
+<p>asd as d 
+<b> this is bold </b>
+</p>
+<h2>asdas asda asd </h2>
+<b> This is also bold </b>
+asdas
+asdas
+as
 
-<CaPTION>
-</HtMl>
+asdasda
+
+<p> asd a sd </p>
+<h3> huhu </h3>
+</body>
+</html>

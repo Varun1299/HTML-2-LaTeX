@@ -9,10 +9,13 @@ Reference: http://dinosaur.compilertools.net/bison/bison_5.html
 #include <string.h>
 #include <stdlib.h> 
 #include <string.h>
-#include "calc.h"  /* Contains definition of `symrec' */
+#include "helper.h"  /* Contains definition of `symrec' */
 
 int  yylex(void);
 void yyerror (char  *);
+
+
+
 %}
 
 %union {
@@ -72,19 +75,37 @@ void yyerror (char  *);
 
 %%
 START:    
-        | HTML_BEGIN BODY HTML_END      { printf("%s\n", $2);}
+        | HTML_BEGIN BODY HTML_END      { FILE *filePtr = fopen("output.tex", "w");fprintf(filePtr, "%s\n", $2); fclose(filePtr);}
         | error '\n' {  yyerrok; }
 ;
 
 BODY:                                    { $$ = strdup(""); }
-        | BODY_BEGIN TAG_TEXT BODY_END   { $$ = join(join("\\begin{document}\n", $2), "\\end{document}"); }     
+        | BODY_BEGIN TAG_TEXT BODY_END   { $$ = join(join("\\documentclass[]{article}\\usepackage[utf8]{inputenc}\\usepackage{ulem, fixltx2e, color, soul}\\title{compilers} \\author{ARSV} \\date{April 2019} \\begin{document}\n", $2), "\\end{document}"); }     
 
 TAG_TEXT:                   { $$ = strdup(""); }
-        | TEXT TAG_TEXT     { $$ = join($1, $2); }    
+        | TEXT TAG_TEXT     { $$ = join($1, join(" ",$2)); }    
         | HEADER_1_BEGIN TEXT_STR HEADER_1_END TAG_TEXT { $$ = join(join("\\section{",$2), join("}",$4)); }
         | HEADER_2_BEGIN TEXT_STR HEADER_2_END TAG_TEXT { $$ = join(join("\\subsection{",$2), join("}",$4)); }
         | HEADER_3_BEGIN TEXT_STR HEADER_3_END TAG_TEXT { $$ = join(join("\\subsubsection{",$2), join("}",$4)); }
-        | PARA_BEGIN TEXT_STR PARA_END TAG_TEXT { $$ = join(join("\n",$2), join("\n",$4)); }
+        | PARA_BEGIN TAG_TEXT PARA_END TAG_TEXT { $$ = join(join(" \\par \\noindent ",$2), join("\n",$4)); }
+	| BOLD_BEGIN TAG_TEXT BOLD_END TAG_TEXT { $$ = join(join("\\textbf{", $2), join("}", $4)); }
+	| ITALIC_BEGIN TAG_TEXT ITALIC_END TAG_TEXT { $$ = join(join("\\textit{", $2), join("}", $4)); }
+	| EMPH_BEGIN TAG_TEXT EMPH_END TAG_TEXT { $$ = join(join("\\textit{", $2),join("}", $4)); }
+	| DEL_BEGIN TAG_TEXT DEL_END TAG_TEXT { $$ = join(join("\\sout{", $2), join("}", $4)); }
+	| STRONG_BEGIN TAG_TEXT STRONG_END TAG_TEXT { $$ = join(join("\\textbf{", $2), join("}", $4)); }
+	| SUB_BEGIN TAG_TEXT SUB_END TAG_TEXT { $$ = join(join("\\textsubscript{", $2),  join("}", $4)); }
+	| SUP_BEGIN TAG_TEXT SUP_END TAG_TEXT { $$ = join(join("\\textsuperscript{", $2), join("}", $4)); }
+	| MARK_BEGIN TAG_TEXT MARK_END TAG_TEXT { $$ = join(join("\\hl{", $2), join("}", $4)); }
+	| INS_BEGIN TAG_TEXT INS_END TAG_TEXT { $$ = join(join("\\underline{", $2), join("}", $4)); }
+	| SMALL_BEGIN TAG_TEXT SMALL_END TAG_TEXT { $$ = join(join("\\small{", $2), join("}", $4)); }
+	| TABLE_BEGIN TAG_TEXT TABLE_END TAG_TEXT { $$ = join(join("\\begin{table}[h] \\begin{center}", $2), join("\\end{center} \\end{table}", $4)); }
+	| TR_BEGIN TAG_TEXT TR_END TAG_TEXT { $$ = join($2,join("  \\\\ ", $4));}
+	| TH_BEGIN TAG_TEXT TH_END TAG_TEXT { $$ = join(join("\\textbf{", $2), join("} &", $4)); }
+	| TD_BEGIN TAG_TEXT TD_END TAG_TEXT { $$ = join($2, join(" &", $4)); }
+	| CAPTION_BEGIN TAG_TEXT CAPTION_END TAG_TEXT { $$ = join(join("\\caption{",$2), join("}",$4)); }
+
+
+
 ;
 
 TEXT_STR:               { $$ = strdup(""); }

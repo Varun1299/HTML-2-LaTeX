@@ -7,7 +7,7 @@ int tag_open = 0;
 SPACE [ \t ]+
 LETTERS [a-zA-Z]+
 DIGITS [0-9]+
-text ({LETTERS}|{DIGITS}|{SPACE})
+text ({LETTERS}|{DIGITS}|{SPACE}|"\""|"\'"|[.!@#$%^&(),?:;])
 LAB [<]
 RAB [>]
 SLASH [/]
@@ -35,7 +35,7 @@ CAPTION [Cc][aA][pP][tT][Ii][Oo][nN]
 %%
 
 {LAB}{HTML}{RAB} {    tag_open = 0; return HTML_BEGIN;    }   //html open tag
-{LAB}{SLASH}{HTML}{RAB} {    tag_open = 0; return HTML_END; }  //html end tag
+{LAB}{SLASH}{HTML}{RAB} {tag_open = 0; return HTML_END; }  //html end tag
 
 {LAB}{BODY}{RAB} {    tag_open = 1; return BODY_BEGIN;    }    //body begin tag
 {LAB}{SLASH}{BODY}{RAB} {    tag_open = 0; return BODY_END; }  //body end tag
