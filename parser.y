@@ -31,6 +31,36 @@ void yyerror (char  *);
 %token HEADER_3_END
 %token PARA_BEGIN
 %token PARA_END
+%token BOLD_BEGIN
+%token BOLD_END
+%token STRONG_BEGIN
+%token STRONG_END
+%token ITALIC_BEGIN
+%token ITALIC_END
+%token EMPH_BEGIN
+%token EMPH_END
+%token MARK_BEGIN
+%token MARK_END
+%token SMALL_BEGIN
+%token SMALL_END
+%token DEL_BEGIN
+%token DEL_END
+%token INS_BEGIN
+%token INS_END
+%token SUB_BEGIN
+%token SUB_END
+%token SUP_BEGIN
+%token SUP_END
+%token TABLE_BEGIN
+%token TABLE_END
+%token TR_BEGIN
+%token TR_END
+%token TH_BEGIN
+%token TH_END
+%token TD_BEGIN
+%token TD_END
+%token CAPTION_BEGIN
+%token CAPTION_END
 %token <str> TEXT
 
 %type  <str> TEXT_STR
