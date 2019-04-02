@@ -53,61 +53,60 @@ CAPTION [Cc][aA][pP][tT][Ii][Oo][nN]
 {text}       {   if(tag_open == 1) {  yylval.str = strdup(yytext); return TEXT; }    }    //text tag
 .            {  return yytext[0];    }
 
-{LAB}{BOLD}{RAB} {printf("p\n");}
-{LAB}{SLASH}{BOLD}{RAB} {printf("p\n");}
+{LAB}{BOLD}{RAB}        {return BOLD_BEGIN;}
+{LAB}{SLASH}{BOLD}{RAB} {return BOLD_END;}
 
-
-{LAB}{STRONG}{RAB} {printf("s\n");}
-{LAB}{SLASH}{STRONG}{RAB} {printf("s\n");}
-
-
-
-{LAB}{ITALIC}{RAB} {printf("s\n");}
-{LAB}{SLASH}{ITALIC}{RAB} {printf("s\n");}
+{LAB}{STRONG}{RAB} {return STRONG_BEGIN;}
+{LAB}{SLASH}{STRONG}{RAB} {return STRONG_END;}
 
 
 
-{LAB}{EMPH}{RAB} {printf("s\n");}
-{LAB}{SLASH}{EMPH}{RAB} {printf("s\n");}
+{LAB}{ITALIC}{RAB} {return ITALIC_BEGIN;}
+{LAB}{SLASH}{ITALIC}{RAB} {return ITALIC_END;}
 
 
 
-{LAB}{MARK}{RAB} {printf("s\n");}
-{LAB}{SLASH}{MARK}{RAB} {printf("s\n");}
+{LAB}{EMPH}{RAB} {return EMPH_BEGIN;}
+{LAB}{SLASH}{EMPH}{RAB} {return EMPH_END;}
 
 
-{LAB}{SMALL}{RAB} {printf("s\n");}
-{LAB}{SLASH}{SMALL}{RAB} {printf("s\n");}
 
-{LAB}{DEL}{RAB} {printf("s\n");}
-{LAB}{SLASH}{DEL}{RAB} {printf("s\n");}
-
-{LAB}{INS}{RAB} {printf("s\n");}
-{LAB}{SLASH}{INS}{RAB} {printf("s\n");}
-
-{LAB}{SUB}{RAB} {printf("s\n");}
-{LAB}{SLASH}{SUB}{RAB} {printf("s\n");}
-
-{LAB}{SUP}{RAB} {printf("s\n");}
-{LAB}{SLASH}{SUP}{RAB} {printf("s\n");}
-
-{LAB}{TABLE}{RAB} {printf("s\n");}
-{LAB}{SLASH}{TABLE}{RAB} {printf("s\n");}
-
-{LAB}{TR}{RAB} {printf("s\n");}
-{LAB}{SLASH}{TR}{RAB} {printf("s\n");}
+{LAB}{MARK}{RAB} {return MARK_BEGIN;}
+{LAB}{SLASH}{MARK}{RAB} {return MARK_END;}
 
 
-{LAB}{TH}{RAB} {printf("s\n");}
-{LAB}{SLASH}{TH}{RAB} {printf("s\n");}
+{LAB}{SMALL}{RAB} {return SMALL_BEGIN;}
+{LAB}{SLASH}{SMALL}{RAB} {return SMALL_END;}
+
+{LAB}{DEL}{RAB} {return DEL_BEGIN;}
+{LAB}{SLASH}{DEL}{RAB} {return DEL_END;}
+
+{LAB}{INS}{RAB} {return INS_BEGIN;}
+{LAB}{SLASH}{INS}{RAB} {return INS_END;}
+
+{LAB}{SUB}{RAB} {return SUB_BEGIN;}
+{LAB}{SLASH}{SUB}{RAB} {return SUB_END;}
+
+{LAB}{SUP}{RAB} {return SUP_BEGIN;}
+{LAB}{SLASH}{SUP}{RAB} {return SUP_END;}
+
+{LAB}{TABLE}{RAB} {return TABLE_BEGIN;}
+{LAB}{SLASH}{TABLE}{RAB} {return TABLE_END;}
+
+{LAB}{TR}{RAB} {return TR_BEGIN;}
+{LAB}{SLASH}{TR}{RAB} {return TR_END;}
 
 
-{LAB}{TD}{RAB} {printf("s\n");}
-{LAB}{SLASH}{TD}{RAB} {printf("s\n");}
+{LAB}{TH}{RAB} {return TH_BEGIN;}
+{LAB}{SLASH}{TH}{RAB} {return TH_END;}
 
 
-{LAB}{CAPTION}{RAB} {printf("C\n");}
-{LAB}{SLASH}{CAPTION}{RAB} {printf("C\n");}
+{LAB}{TD}{RAB} {return TD_BEGIN;}
+{LAB}{SLASH}{TD}{RAB} {return TD_END;}
+
+
+{LAB}{CAPTION}{RAB} {return CAPTION_BEGIN;}
+{LAB}{SLASH}{CAPTION}{RAB} {return CAPTION_END;}
 
 
 
